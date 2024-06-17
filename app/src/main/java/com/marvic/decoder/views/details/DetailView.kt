@@ -2,6 +2,7 @@ package com.marvic.decoder.views.details
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 
@@ -38,7 +39,7 @@ fun DetailView(ingredientName: String, navController: NavController) {
 
 @Composable
 fun DetailBody(paddingValues: Dp) {
-    Column {
+    Column(modifier = Modifier.padding(vertical = paddingValues)) {
         Text(text = "Descripcion")
     }
 }
