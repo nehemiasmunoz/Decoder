@@ -1,6 +1,5 @@
-package com.marvic.decoder.views
+package com.marvic.decoder.views.home
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,13 +27,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.marvic.decoder.R
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeView(navController: NavController) {
     Scaffold(
@@ -45,7 +45,10 @@ fun HomeView(navController: NavController) {
                 title = { Text(text = "Home") },
                 actions = {
                     IconButton(onClick = { /*TODO: open camera*/ }) {
-                        Icon(imageVector = Icons.Filled.Search, contentDescription = "")
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_photo_camera_24),
+                            contentDescription = "camera icon"
+                        )
                     }
                 },
             )
@@ -60,57 +63,73 @@ fun HomeView(navController: NavController) {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun _HomeBody(topPadding: Dp, navController: NavController) {
-    var userInputSearch by remember {
-        mutableStateOf(TextFieldValue(""))
-    }
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .padding(top = topPadding + 10.dp)
     ) {
+        CustomSearchBar()
+        IngredientsList(navController)
+    }
+}
+
+@Composable
+fun IngredientsList(navController: NavController) {
+    LazyColumn {
+        items(3) { index ->
+            IngredientItem(navController, index)
+
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun IngredientItem(navController: NavController, index: Int) {
+    Card(
+        onClick = { navController.navigate("DetailView/${"Ingredient $index"}") },
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(6.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            OutlinedTextField(
-                value = userInputSearch,
-                onValueChange = {
-                    userInputSearch = it
-                },
-                label = { Text(text = "Ingrediente") },
-                placeholder = { Text(text = "Sucralosa") }
-            )
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Default.Search, contentDescription = "search input")
-            }
+            Text(text = "Ingredient $index")
+            Icon(imageVector = Icons.Default.Check, contentDescription = "Good")
         }
-        LazyColumn {
-            items(3) { index ->
-                Card(
-                    onClick = { navController.navigate("DetailView/${"Ingredient $index"}") },
-                    elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(text = "Ingredient $index")
-                        Icon(imageVector = Icons.Default.Check, contentDescription = "Good")
-                    }
-                }
-            }
+    }
+}
+
+@Composable
+fun CustomSearchBar() {
+    var userInputSearch by remember {
+        mutableStateOf(TextFieldValue(""))
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(6.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        OutlinedTextField(
+            value = userInputSearch,
+            onValueChange = {
+                userInputSearch = it
+            },
+            label = { Text(text = "Ingrediente") },
+            placeholder = { Text(text = "Ej: Sucralosa") }
+        )
+        IconButton(onClick = { /*TODO*/ }) {
+            Icon(imageVector = Icons.Default.Search, contentDescription = "search input")
         }
     }
 }
