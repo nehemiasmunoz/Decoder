@@ -21,22 +21,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.marvic.decoder.R
+import com.marvic.decoder.viewmodels.home.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeView(navController: NavController) {
+fun HomeView(navController: NavController, homeViewModel: HomeViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -56,7 +54,8 @@ fun HomeView(navController: NavController) {
         content = { paddingValues ->
             _HomeBody(
                 paddingValues.calculateTopPadding(),
-                navController = navController
+                navController = navController,
+                homeViewModel = homeViewModel
             )
         }
     )
@@ -64,13 +63,13 @@ fun HomeView(navController: NavController) {
 
 
 @Composable
-fun _HomeBody(topPadding: Dp, navController: NavController) {
+fun _HomeBody(topPadding: Dp, navController: NavController, homeViewModel: HomeViewModel) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .padding(top = topPadding + 10.dp)
     ) {
-        CustomSearchBar()
+        CustomSearchBar(homeViewModel)
         IngredientsList(navController)
     }
 }
@@ -109,10 +108,10 @@ fun IngredientItem(navController: NavController, index: Int) {
 }
 
 @Composable
-fun CustomSearchBar() {
-    var userInputSearch by remember {
-        mutableStateOf(TextFieldValue(""))
-    }
+fun CustomSearchBar(homeViewModel: HomeViewModel) {
+    //observamos desde el viewmodel
+    val text by homeViewModel.text.collectAsState()
+    val isTextValid by homeViewModel.isTextValid.collectAsState()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -121,10 +120,11 @@ fun CustomSearchBar() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         OutlinedTextField(
-            value = userInputSearch,
+            value = text,
             onValueChange = {
-                userInputSearch = it
+                homeViewModel.onTextChange(it)
             },
+            isError = !isTextValid,
             label = { Text(text = "Ingrediente") },
             placeholder = { Text(text = "Ej: Sucralosa") }
         )
