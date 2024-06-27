@@ -2,18 +2,21 @@ package com.marvic.decoder.views.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -26,7 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.marvic.decoder.R
@@ -40,20 +43,12 @@ fun HomeView(navController: NavController, homeViewModel: HomeViewModel) {
             TopAppBar(
                 modifier = Modifier
                     .fillMaxWidth(),
-                title = { Text(text = "Home") },
-                actions = {
-                    IconButton(onClick = { /*TODO: open camera*/ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_photo_camera_24),
-                            contentDescription = "camera icon"
-                        )
-                    }
-                },
+                title = { Text(text = stringResource(R.string.home_topbar_title)) },
             )
         },
         content = { paddingValues ->
             _HomeBody(
-                paddingValues.calculateTopPadding(),
+                paddingValues,
                 navController = navController,
                 homeViewModel = homeViewModel
             )
@@ -63,11 +58,15 @@ fun HomeView(navController: NavController, homeViewModel: HomeViewModel) {
 
 
 @Composable
-fun _HomeBody(topPadding: Dp, navController: NavController, homeViewModel: HomeViewModel) {
+fun _HomeBody(
+    paddingValues: PaddingValues,
+    navController: NavController,
+    homeViewModel: HomeViewModel
+) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(top = topPadding + 10.dp)
+            .padding(vertical = paddingValues.calculateTopPadding(), horizontal = 16.dp)
     ) {
         CustomSearchBar(homeViewModel)
         IngredientsList(navController)
@@ -77,9 +76,8 @@ fun _HomeBody(topPadding: Dp, navController: NavController, homeViewModel: HomeV
 @Composable
 fun IngredientsList(navController: NavController) {
     LazyColumn {
-        items(3) { index ->
-            IngredientItem(navController, index)
-
+        items(3) {
+            IngredientItem(navController, it)
         }
     }
 }
@@ -92,7 +90,7 @@ fun IngredientItem(navController: NavController, index: Int) {
         elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(vertical = 8.dp)
     ) {
         Row(
             modifier = Modifier
@@ -113,23 +111,44 @@ fun CustomSearchBar(homeViewModel: HomeViewModel) {
     val text by homeViewModel.text.collectAsState()
     val isTextValid by homeViewModel.isTextValid.collectAsState()
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(6.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
+            modifier = Modifier
+                .weight(4f),
             value = text,
+            label = { Text(text = "Ingrediente") },
+            shape = RoundedCornerShape(10),
+            isError = !isTextValid,
             onValueChange = {
                 homeViewModel.onTextChange(it)
             },
-            isError = !isTextValid,
-            label = { Text(text = "Ingrediente") },
-            placeholder = { Text(text = "Ej: Sucralosa") }
+            trailingIcon = {
+                Row {
+                    IconButton(
+                        onClick = { /*TODO: open camera*/ }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.outline_camera_alt_24),
+                            contentDescription = "camera icon"
+                        )
+                    }
+                    FilledIconButton(
+                        shape = RoundedCornerShape(10),
+                        onClick = { /*TODO: open camera*/ },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = "camera icon"
+                        )
+                    }
+                }
+            },
+            placeholder = {
+                Text(text = "Ej: Sucralosa")
+            }
         )
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = Icons.Default.Search, contentDescription = "search input")
-        }
+
+
     }
 }
