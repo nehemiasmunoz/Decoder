@@ -9,21 +9,26 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
+data class FormError(
+    val nameError: String? = null,
+    val ageError: String? = null,
+)
+
 @HiltViewModel
 class UserRegisterViewModel @Inject constructor() : ViewModel() {
     private val _userForm = MutableStateFlow(User())
     val userForm: StateFlow<User> = _userForm
 
+    private val _formError = MutableStateFlow(FormError())
+    val formError: StateFlow<FormError> = _formError
+
     fun updateName(name: String) {
         _userForm.value = _userForm.value.copy(name = name)
     }
 
-    fun updateEmail(email: String) {
-        _userForm.value = _userForm.value.copy(email = email)
-    }
-
     fun updateAge(age: Int) {
         _userForm.value = _userForm.value.copy(age = age)
+        validateAge(age)
     }
 
     fun updateDiabetes(diabetes: Boolean) {
@@ -44,5 +49,12 @@ class UserRegisterViewModel @Inject constructor() : ViewModel() {
 
     fun updatePreferences(preferences: String) {
         _userForm.value = _userForm.value.copy(preferences = preferences)
+    }
+    
+    fun validateAge(age: Int) {
+        val ageError = if (age <= 0) {
+            "La edad debe ser mayor a 0"
+        } else null
+        _formError.value = _formError.value.copy(ageError = ageError)
     }
 }

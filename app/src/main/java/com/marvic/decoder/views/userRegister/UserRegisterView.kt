@@ -17,6 +17,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -135,12 +136,18 @@ fun NameTextField(userRegisterViewModel: UserRegisterViewModel) {
 @Composable
 fun AgeTextField(userRegisterViewModel: UserRegisterViewModel) {
     val value by userRegisterViewModel.userForm.collectAsState()
+    val formError by userRegisterViewModel.formError.collectAsState()
     CustomTextfield(
         value = value.age.toString(),
         label = stringResource(R.string.register_textfield_edad_usuario),
+        isError = formError.ageError != null,
         keyboardType = KeyboardType.Number
     ) {
-        userRegisterViewModel.updateAge(it.toInt())
+        userRegisterViewModel.updateAge(it.toIntOrNull() ?: 0)
+    }
+    formError.ageError?.let {
+        Text(it, color = MaterialTheme.colorScheme.error)
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 
