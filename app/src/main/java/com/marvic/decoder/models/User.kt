@@ -5,11 +5,10 @@ import com.marvic.decoder.models.enums.hypertension.HypertensionType
 
 data class User(
     val name: String = "",
-    val email: String = "",
-    val age: Int = 1,
+    val age: Int = 0,
     val diabetes: Boolean = false,
     val hypertension: Boolean = false,
-    val diabetesType: DiabetesType = DiabetesType.TYPE_1,
-    val hypertensionType: HypertensionType = HypertensionType.PRIMARY,
+    val diabetesType: DiabetesType = DiabetesType.NONE,
+    val hypertensionType: HypertensionType = HypertensionType.NONE,
     val preferences: String = "",
 )

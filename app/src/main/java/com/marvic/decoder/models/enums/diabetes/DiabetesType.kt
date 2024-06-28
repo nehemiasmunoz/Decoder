@@ -1,6 +1,10 @@
 package com.marvic.decoder.models.enums.diabetes
 
 enum class DiabetesType(val type: String, val description: String) {
+    NONE(
+        "Sin diabetes",
+        "Indica que la persona no presenta diabetes."
+    ),
     TYPE_1(
         "Diabetes tipo 1",
         "Enfermedad autoinmune en la que el sistema inmunológico ataca y destruye las células beta del páncreas que producen insulina."
@@ -21,5 +25,4 @@ enum class DiabetesType(val type: String, val description: String) {
         "Diabetes secundaria",
         "Resulta de otras condiciones médicas o tratamientos, como enfermedades pancreáticas, ciertos medicamentos o tratamientos hormonales."
     )
-
 }

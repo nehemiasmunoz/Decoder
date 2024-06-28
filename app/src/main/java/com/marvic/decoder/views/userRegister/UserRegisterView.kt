@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -57,11 +59,12 @@ fun UserRegisterView(userRegisterViewModel: UserRegisterViewModel) {
 @Composable
 fun UserRegisterBody(paddingValues: PaddingValues, userRegisterViewModel: UserRegisterViewModel) {
     Column(
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
             .padding(vertical = paddingValues.calculateTopPadding(), horizontal = 16.dp)
-            .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.SpaceEvenly
+            .verticalScroll(rememberScrollState()),
     ) {
         UserRegisterForm(userRegisterViewModel)
     }
@@ -69,12 +72,21 @@ fun UserRegisterBody(paddingValues: PaddingValues, userRegisterViewModel: UserRe
 
 @Composable
 fun UserRegisterForm(userRegisterViewModel: UserRegisterViewModel) {
+    val user by userRegisterViewModel.userForm.collectAsState()
     NameTextField(userRegisterViewModel)
-    EmailTextField(userRegisterViewModel)
+    Spacer(modifier = Modifier.height(5.dp))
     AgeTextField(userRegisterViewModel)
+    Spacer(modifier = Modifier.height(5.dp))
     AffectionsCheckboxes(userRegisterViewModel)
-    HypertensionTypeDropdownMenu(userRegisterViewModel)
-    DiabetesTypeDropdownMenu(userRegisterViewModel)
+    Spacer(modifier = Modifier.height(5.dp))
+    if (user.diabetes) {
+        HypertensionTypeDropdownMenu(userRegisterViewModel)
+        Spacer(modifier = Modifier.height(5.dp))
+    }
+    if (user.hypertension) {
+        DiabetesTypeDropdownMenu(userRegisterViewModel)
+    }
+    Spacer(modifier = Modifier.height(5.dp))
     SaveButton()
 }
 
@@ -118,19 +130,6 @@ fun NameTextField(userRegisterViewModel: UserRegisterViewModel) {
         userRegisterViewModel.updateName(it)
     }
 
-}
-
-
-@Composable
-fun EmailTextField(userRegisterViewModel: UserRegisterViewModel) {
-    val value by userRegisterViewModel.userForm.collectAsState()
-    CustomTextfield(
-        value = value.email,
-        label = stringResource(id = R.string.register_textfield_email_usuario),
-        keyboardType = KeyboardType.Email,
-    ) {
-        userRegisterViewModel.updateEmail(it)
-    }
 }
 
 @Composable

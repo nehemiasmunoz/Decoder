@@ -1,6 +1,10 @@
 package com.marvic.decoder.models.enums.hypertension
 
 enum class HypertensionType(val type: String, val description: String) {
+    NONE(
+        "Sin hipertensión",
+        "Indica que la persona no presenta hipertensión."
+    ),
     PRIMARY(
         "Primaria / esencial",
         "Hipertensión primaria o esencial, sin causa específica identificable"
