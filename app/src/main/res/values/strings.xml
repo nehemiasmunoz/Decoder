@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Decoder</string>
+    <string name="home_topbar_title">Home</string>
+    <string name="register_topbar_title">Datos del usuario</string>
+    <string name="register_textfield_nombre_usuario">Nombre</string>
+    <string name="register_textfield_edad_usuario">Edad</string>
+    <string name="register_textfield_email_usuario">Email</string>
+    <string name="register_checkbox_section_title">Afecciones médicas</string>
 </resources>
