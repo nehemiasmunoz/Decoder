@@ -10,5 +10,4 @@ data class User(
     val hypertension: Boolean = false,
     val diabetesType: DiabetesType = DiabetesType.NONE,
     val hypertensionType: HypertensionType = HypertensionType.NONE,
-    val preferences: String = "",
 )

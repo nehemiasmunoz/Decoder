@@ -47,11 +47,8 @@ class UserRegisterViewModel @Inject constructor() : ViewModel() {
         _userForm.value = _userForm.value.copy(hypertensionType = hypertensionType)
     }
 
-    fun updatePreferences(preferences: String) {
-        _userForm.value = _userForm.value.copy(preferences = preferences)
-    }
-    
-    fun validateAge(age: Int) {
+
+    private fun validateAge(age: Int) {
         val ageError = if (age <= 0) {
             "La edad debe ser mayor a 0"
         } else null
