@@ -10,6 +10,10 @@ android {
     namespace = "com.marvic.decoder"
     compileSdk = 34
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "com.marvic.decoder"
         minSdk = 24
@@ -21,6 +25,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "geminiApiKey", "")
     }
 
     buildTypes {
@@ -75,6 +81,10 @@ dependencies {
     //Hilt dep injection
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
+    //DataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    //Gemini
+    implementation("com.google.ai.client.generativeai:generativeai:0.7.0")
 
 }
 kapt {
