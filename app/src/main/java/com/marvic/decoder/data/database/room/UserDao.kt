@@ -1,4 +1,4 @@
-package com.marvic.decoder.room
+package com.marvic.decoder.data.database.room
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -9,7 +9,7 @@ import com.marvic.decoder.models.User
 import kotlinx.coroutines.flow.Flow
 
 @Dao //Data Access Observer
-interface UserDatabaseDao {
+interface UserDao {
     @Query("SELECT * FROM users")
     fun getAllUsers(): Flow<List<User>>
 
