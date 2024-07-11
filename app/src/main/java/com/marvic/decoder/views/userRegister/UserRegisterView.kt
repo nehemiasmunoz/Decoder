@@ -33,17 +33,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.marvic.decoder.R
 import com.marvic.decoder.components.CustomTextfield
 import com.marvic.decoder.models.enums.diabetes.DiabetesType
 import com.marvic.decoder.models.enums.diabetes.getDiabetesTypeList
 import com.marvic.decoder.models.enums.hypertension.HypertensionType
 import com.marvic.decoder.models.enums.hypertension.getHypertensionTypeList
-import com.marvic.decoder.viewmodels.userRegister.UserRegisterViewModel
+import com.marvic.decoder.viewModels.user.UserViewModel
+import com.marvic.decoder.viewModels.userRegister.UserRegisterViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserRegisterView(userRegisterViewModel: UserRegisterViewModel) {
+fun UserRegisterView(
+    userRegisterViewModel: UserRegisterViewModel,
+    userVM: UserViewModel,
+    navController: NavController
+) {
     Scaffold(topBar = {
         TopAppBar(
             title = {
@@ -53,12 +59,17 @@ fun UserRegisterView(userRegisterViewModel: UserRegisterViewModel) {
             },
         )
     }) {
-        UserRegisterBody(it, userRegisterViewModel)
+        UserRegisterBody(it, userRegisterViewModel, userVM, navController)
     }
 }
 
 @Composable
-fun UserRegisterBody(paddingValues: PaddingValues, userRegisterViewModel: UserRegisterViewModel) {
+fun UserRegisterBody(
+    paddingValues: PaddingValues,
+    userRegisterViewModel: UserRegisterViewModel,
+    userVM: UserViewModel,
+    navController: NavController
+) {
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -67,12 +78,16 @@ fun UserRegisterBody(paddingValues: PaddingValues, userRegisterViewModel: UserRe
             .padding(vertical = paddingValues.calculateTopPadding(), horizontal = 16.dp)
             .verticalScroll(rememberScrollState()),
     ) {
-        UserRegisterForm(userRegisterViewModel)
+        UserRegisterForm(userRegisterViewModel, userVM, navController)
     }
 }
 
 @Composable
-fun UserRegisterForm(userRegisterViewModel: UserRegisterViewModel) {
+fun UserRegisterForm(
+    userRegisterViewModel: UserRegisterViewModel,
+    userVM: UserViewModel,
+    navController: NavController
+) {
     val user by userRegisterViewModel.userForm.collectAsState()
     NameTextField(userRegisterViewModel)
     Spacer(modifier = Modifier.height(5.dp))
@@ -88,13 +103,22 @@ fun UserRegisterForm(userRegisterViewModel: UserRegisterViewModel) {
         DiabetesTypeDropdownMenu(userRegisterViewModel)
     }
     Spacer(modifier = Modifier.height(5.dp))
-    SaveButton()
+    SaveButton(userRegisterViewModel, userVM, navController)
 }
 
 @Composable
-fun SaveButton() {
-    ElevatedButton(modifier = Modifier.fillMaxWidth(), onClick = { /*Todo: send data to db*/ }) {
+fun SaveButton(
+    userRegisterViewModel: UserRegisterViewModel,
+    userVM: UserViewModel,
+    navController: NavController
+) {
+    ElevatedButton(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = {
+            userVM.addUser(userRegisterViewModel.userForm.value)
+        }) {
         Text(text = "Guardar")
+        navController.navigateUp()
     }
 }
 

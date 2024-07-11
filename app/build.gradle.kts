@@ -10,10 +10,6 @@ android {
     namespace = "com.marvic.decoder"
     compileSdk = 34
 
-    buildFeatures {
-        buildConfig = true
-    }
-
     defaultConfig {
         applicationId = "com.marvic.decoder"
         minSdk = 24
@@ -25,8 +21,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        buildConfigField("String", "geminiApiKey", "")
     }
 
     buildTypes {
@@ -68,6 +62,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.room.common)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -79,12 +74,17 @@ dependencies {
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
     //Hilt dep injection
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
-    //DataStore
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-    //Gemini
-    implementation("com.google.ai.client.generativeai:generativeai:0.7.0")
+    val hiltVersion = "2.46.1"
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+    //Lifecycle
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    //Room
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
 
 }
 kapt {

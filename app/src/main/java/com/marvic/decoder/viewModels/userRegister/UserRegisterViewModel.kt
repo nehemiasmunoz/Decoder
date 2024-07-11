@@ -1,4 +1,4 @@
-package com.marvic.decoder.viewmodels.userRegister
+package com.marvic.decoder.viewModels.userRegister
 
 import androidx.lifecycle.ViewModel
 import com.marvic.decoder.models.User
@@ -15,7 +15,8 @@ data class FormError(
 )
 
 @HiltViewModel
-class UserRegisterViewModel @Inject constructor() : ViewModel() {
+class UserRegisterViewModel @Inject constructor() :
+    ViewModel() {
     private val _userForm = MutableStateFlow(User())
     val userForm: StateFlow<User> = _userForm
 
@@ -47,11 +48,7 @@ class UserRegisterViewModel @Inject constructor() : ViewModel() {
         _userForm.value = _userForm.value.copy(hypertensionType = hypertensionType)
     }
 
-    fun updatePreferences(preferences: String) {
-        _userForm.value = _userForm.value.copy(preferences = preferences)
-    }
-    
-    fun validateAge(age: Int) {
+    private fun validateAge(age: Int) {
         val ageError = if (age <= 0) {
             "La edad debe ser mayor a 0"
         } else null

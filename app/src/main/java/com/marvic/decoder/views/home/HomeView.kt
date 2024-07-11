@@ -12,20 +12,25 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -33,27 +38,51 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.marvic.decoder.R
+import com.marvic.decoder.components.DrawerContent
+import com.marvic.decoder.viewModels.user.UserViewModel
 import com.marvic.decoder.viewmodels.home.HomeViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeView(navController: NavController, homeViewModel: HomeViewModel) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                title = { Text(text = stringResource(R.string.home_topbar_title)) },
-            )
-        },
-        content = { paddingValues ->
-            _HomeBody(
-                paddingValues,
-                navController = navController,
-                homeViewModel = homeViewModel
-            )
-        }
-    )
+fun HomeView(
+    navController: NavController,
+    homeViewModel: HomeViewModel,
+    userViewModel: UserViewModel
+) {
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    ModalNavigationDrawer(
+        drawerContent = { DrawerContent(userViewModel, navController) },
+        drawerState = drawerState
+    ) {
+
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    title = { Text(text = stringResource(R.string.home_topbar_title)) },
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            scope.launch {
+                                drawerState.apply { if (isClosed) open() else close() }
+                            }
+                        }) {
+                            Icon(imageVector = Icons.Default.Menu, contentDescription = "Menu")
+                        }
+                    }
+                )
+            },
+            content = { paddingValues ->
+                _HomeBody(
+                    paddingValues,
+                    navController = navController,
+                    homeViewModel = homeViewModel
+                )
+            }
+        )
+    }
 }
 
 
