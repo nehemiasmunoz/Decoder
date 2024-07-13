@@ -15,13 +15,13 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(private val userDao: UserDaoImpl) :
     ViewModel() {
 
-    private val _user = MutableStateFlow<List<User>>(emptyList());
+    private val _user = MutableStateFlow<List<User>>(emptyList())
     val user = _user.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             userDao.getAllUsers().collect {
-                if (it.isNullOrEmpty()) {
+                if (it.isEmpty()) {
                     _user.value = emptyList()
                 } else {
                     _user.value = it

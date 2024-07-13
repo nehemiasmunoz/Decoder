@@ -13,13 +13,11 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.marvic.decoder.viewModels.user.UserViewModel
 
@@ -43,10 +41,14 @@ fun CustomTextfield(
 }
 
 @Composable
-fun DrawerContent(userViewModel: UserViewModel = viewModel(), navController: NavController) {
-    val users by userViewModel.user.collectAsState()
-    val user = users[0]
-    if (users.isEmpty()) {
+fun DrawerContent(
+    userViewModel: UserViewModel,
+    navController: NavController
+) {
+    val users = userViewModel.user.collectAsState()
+    val user = users.value.firstOrNull()
+
+    if (user == null) {
         Column(
             modifier = Modifier.fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -78,6 +80,9 @@ fun DrawerContent(userViewModel: UserViewModel = viewModel(), navController: Nav
                     Text(text = "Tiene hipertension")
                     Text(text = user.hypertensionType.name)
 
+                }
+                ElevatedButton(onClick = { navController.navigate("UserRegisterView") }) {
+                    Text(text = "Actualizar datos")
                 }
             }
         }

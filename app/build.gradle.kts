@@ -4,8 +4,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
 //    hilt
-    id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -83,10 +83,10 @@ dependencies {
     //Navegacion
     val navVersion = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$navVersion")
-    //Hilt dep injection
-    val hiltVersion = "2.46.1"
-    implementation("com.google.dagger:hilt-android:$hiltVersion")
-    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+    //Dagger dep injection
+    val daggerVersion = "2.51.1"
+    implementation("com.google.dagger:hilt-android:$daggerVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$daggerVersion")
     //Lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     //Room
