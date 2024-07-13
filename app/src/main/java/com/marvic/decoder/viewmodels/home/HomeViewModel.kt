@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     val model = GenerativeModel(
         "gemini-1.5-flash",
-        BuildConfig.geminiApiKey,
+        BuildConfig.GEMINI_API_KEY,
         generationConfig = generationConfig {
             temperature = 1f
             topK = 64
