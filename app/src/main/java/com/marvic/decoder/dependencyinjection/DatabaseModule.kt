@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.marvic.decoder.data.database.room.DecoderDatabase
 import com.marvic.decoder.data.database.room.UserDao
+import com.marvic.decoder.data.repository.UserDaoImpl
+import com.marvic.decoder.viewModels.user.UserViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +26,11 @@ object DatabaseModule {
     @Provides
     fun userDao(database: DecoderDatabase): UserDao {
         return database.userDao()
+    }
+
+    @Provides
+    fun provideUserViewModel(userDao: UserDaoImpl): UserViewModel {
+        return UserViewModel(userDao)
     }
 
 }

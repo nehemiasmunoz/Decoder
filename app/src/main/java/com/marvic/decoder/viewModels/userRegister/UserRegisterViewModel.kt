@@ -32,12 +32,12 @@ class UserRegisterViewModel @Inject constructor() :
         validateAge(age)
     }
 
-    fun updateDiabetes(diabetes: Boolean) {
-        _userForm.value = _userForm.value.copy(diabetes = diabetes)
+    fun updateDiabetes(hasDiabetes: Boolean) {
+        _userForm.value = _userForm.value.copy(diabetes = hasDiabetes)
     }
 
-    fun updateHypertension(hypertension: Boolean) {
-        _userForm.value = _userForm.value.copy(hypertension = hypertension)
+    fun updateHypertension(hasHypertension: Boolean) {
+        _userForm.value = _userForm.value.copy(hypertension = hasHypertension)
     }
 
     fun updateDiabetesType(diabetesType: DiabetesType) {

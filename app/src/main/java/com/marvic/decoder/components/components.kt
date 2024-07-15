@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.marvic.decoder.viewModels.user.UserViewModel
 
@@ -63,26 +65,48 @@ fun DrawerContent(
             modifier = Modifier
                 .fillMaxHeight()
                 .background(color = Color.White)
-                .padding(8.dp),
-            contentAlignment = Alignment.Center
+                .padding(vertical = 20.dp, horizontal = 8.dp),
+            contentAlignment = Alignment.TopCenter
         ) {
-            Column {
-                Text(text = "Nombre usuario")
-                Text(text = user.name)
-                Text(text = "Edad usuario")
-                Text(text = user.age.toString())
+            Column(
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("Datos del usuario", fontSize = 20.sp)
+                OutlinedTextField(
+                    label = { Text(text = "Nombre usuario") },
+                    value = user.name,
+                    enabled = false,
+                    onValueChange = {})
+                OutlinedTextField(
+                    enabled = false,
+                    label = { Text(text = "Edad usuario") },
+                    value = user.age.toString(),
+                    onValueChange = {})
 
                 if (user.diabetes) {
-                    Text(text = "Tipo diabetes")
-                    Text(text = user.diabetesType.name)
+                    OutlinedTextField(
+                        enabled = false,
+                        label = { Text(text = "Diabetes tipo") },
+                        value = user.diabetesType.type,
+                        onValueChange = {})
                 }
                 if (user.hypertension) {
-                    Text(text = "Tiene hipertension")
-                    Text(text = user.hypertensionType.name)
-
+                    OutlinedTextField(
+                        enabled = false,
+                        label = { Text(text = "Hipertension tipo") },
+                        value = user.hypertensionType.type,
+                        onValueChange = {})
                 }
-                ElevatedButton(onClick = { navController.navigate("UserRegisterView") }) {
-                    Text(text = "Actualizar datos")
+                Row {
+                    ElevatedButton(onClick = { navController.navigate("UserRegisterView") }) {
+                        Text(text = "Actualizar datos")
+                    }
+                    ElevatedButton(
+                        onClick = { userViewModel.deleteUser(user) }
+                    ) {
+                        Text(text = "Eliminar datos")
+                    }
                 }
             }
         }
