@@ -6,4 +6,5 @@
     <string name="register_textfield_edad_usuario">Edad</string>
     <string name="register_textfield_email_usuario">Email</string>
     <string name="register_checkbox_section_title">Afecciones médicas</string>
+    <string name="splashscreen_title">Decoder</string>
 </resources>

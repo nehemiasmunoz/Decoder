@@ -12,12 +12,13 @@ import com.marvic.decoder.viewModels.userRegister.UserRegisterViewModel
 import com.marvic.decoder.viewmodels.home.HomeViewModel
 import com.marvic.decoder.views.details.DetailView
 import com.marvic.decoder.views.home.HomeView
+import com.marvic.decoder.views.splash.SplashScreen
 import com.marvic.decoder.views.userRegister.UserRegisterView
 
 @Composable
 fun NavManager(userViewModel: UserViewModel) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "HomeView") {
+    NavHost(navController = navController, startDestination = "SplashScreen") {
         composable("HomeView") {
             val homeViewModel: HomeViewModel = viewModel()
             HomeView(navController, homeViewModel, userViewModel)
@@ -31,6 +32,9 @@ fun NavManager(userViewModel: UserViewModel) {
         )) {
             val ingredientName = it.arguments?.getString("ingredientName") ?: "none"
             DetailView(ingredientName, navController)
+        }
+        composable("SplashScreen") {
+            SplashScreen(navController)
         }
     }
 }
