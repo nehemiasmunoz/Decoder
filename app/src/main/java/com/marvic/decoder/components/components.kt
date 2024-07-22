@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.OutlinedTextField
@@ -65,19 +68,21 @@ fun DrawerContent(
             modifier = Modifier
                 .fillMaxHeight()
                 .background(color = Color.White)
-                .padding(vertical = 20.dp, horizontal = 8.dp),
+                .padding(vertical = 30.dp, horizontal = 8.dp),
             contentAlignment = Alignment.TopCenter
         ) {
             Column(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Datos del usuario", fontSize = 20.sp)
+                Text("Datos del usuario", fontSize = 25.sp)
+                Spacer(modifier = Modifier.height(10.dp))
                 OutlinedTextField(
                     label = { Text(text = "Nombre usuario") },
                     value = user.name,
                     enabled = false,
                     onValueChange = {})
+                Spacer(modifier = Modifier.height(10.dp))
                 OutlinedTextField(
                     enabled = false,
                     label = { Text(text = "Edad usuario") },
@@ -85,6 +90,7 @@ fun DrawerContent(
                     onValueChange = {})
 
                 if (user.diabetes) {
+                    Spacer(modifier = Modifier.height(10.dp))
                     OutlinedTextField(
                         enabled = false,
                         label = { Text(text = "Diabetes tipo") },
@@ -92,16 +98,19 @@ fun DrawerContent(
                         onValueChange = {})
                 }
                 if (user.hypertension) {
+                    Spacer(modifier = Modifier.height(10.dp))
                     OutlinedTextField(
                         enabled = false,
                         label = { Text(text = "Hipertension tipo") },
                         value = user.hypertensionType.type,
                         onValueChange = {})
                 }
-                Row {
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(modifier = Modifier.padding(horizontal = 10.dp)) {
                     ElevatedButton(onClick = { navController.navigate("UserRegisterView") }) {
                         Text(text = "Actualizar datos")
                     }
+                    Spacer(modifier = Modifier.width(10.dp))
                     ElevatedButton(
                         onClick = { userViewModel.deleteUser(user) }
                     ) {
