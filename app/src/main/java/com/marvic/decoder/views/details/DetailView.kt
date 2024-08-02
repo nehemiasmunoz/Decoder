@@ -45,6 +45,7 @@ fun DetailView(ingredientName: String, navController: NavController) {
 fun DetailBody(paddingValues: Dp = 16.dp) {
     Column(modifier = Modifier.padding(vertical = paddingValues)) {
         Text(text = "Descripcion")
+        he
         Text(text = "Lorem")
 
 
